@@ -6,6 +6,7 @@
 #include	<sys/types.h>	/* basic system data types */
 #include	<stdio.h>
 #include	<netinet/in.h>	/* sockaddr_in{} and other Internet defns */
+#include	<signal.h>
 
 #define	TESTHOST	"127.0.0.1"	/* test host */
 #define	TESTPORT	9999	/* test port */
@@ -13,6 +14,8 @@
 #define	LISTENQ		1024	/* 2nd argument to listen() */
 
 #define	SA struct sockaddr
+
+typedef	void	Sigfunc(int);	/* for signal handlers */
 
 void 		str_echo(int sockfd);
 void 		str_cli(FILE* fp, int fd);
@@ -29,8 +32,10 @@ void 		Inet_pton(int family, const char *strptr, void* addrptr);
 const char* Inet_ntop(int family, const void *addrptr, char* strptr, size_t len);
 char*		Fgets(char *, int, FILE *);
 
+Sigfunc* 	signal(int signo, Sigfunc* func);
+Sigfunc*	Signal(int signo, Sigfunc *func);	/* for our signal() function */
 
-
+void 		sig_chld(int signo);
 // ssize_t	readn(int fd, void *vptr, size_t n);
 
 // ssize_t writen(int fd, const void *vptr, size_t n);
